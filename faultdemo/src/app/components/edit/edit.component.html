@@ -1,0 +1,43 @@
+<div>
+  <br>
+  <mat-card>
+    <section class="mat-typography">
+      <h3>Update a Fault</h3>
+    </section>
+    <mat-divider></mat-divider>
+    <br>
+    <form [formGroup]="updateForm" class="edit-form">
+      <mat-form-field class="field-full-width">
+        <!-- <input matInput placeholder="Sub Domain" formControlName="subDomain" #subDomain> -->
+        <mat-select placeholder="Domain" formControlName="domain" #domain>
+            <mat-option value="CP">CP</mat-option>
+            <mat-option value="DP">DP</mat-option>
+            <mat-option value="ALL">ALL</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="field-full-width">
+        <!-- <input matInput placeholder="Sub Domain" formControlName="subDomain" #subDomain> -->
+        <mat-select placeholder="Sub Domain" formControlName="subDomain" #subDomain>
+            <mat-option value="Sensor">Sensor</mat-option>
+            <mat-option value="MovingEquip - motor">MovingEquip - motor</mat-option>
+            <mat-option value="MovingEquip - vibrator">MovingEquip - vibrator</mat-option>
+            <mat-option value="ControlCabinet - switch">ControlCabinet - switch</mat-option>
+            <mat-option value="ControlCabinet - cable">ControlCabinet - cable</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Cause Descriptor" formControlName="cause" #cause>
+      </mat-form-field>
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Corrective Descriptor" formControlName="action" #action>
+      </mat-form-field>
+      <mat-form-field class="field-full-width">
+          <input matInput placeholder="Keywords" formControlName="keyword" #keyword>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <br><br>
+      <button mat-raised-button color="accent" routerLink="/list">Back</button>
+      <button type="submit" (click)="updateFault(domain.value, subDomain.value, cause.value, action.value, keyword.value)" [disabled]="updateForm.pristine || updateForm.invalid" mat-raised-button color="primary">Save</button>
+    </form>
+  </mat-card>
+</div>

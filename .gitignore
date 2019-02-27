@@ -1,0 +1,5 @@
+node_modules
+backend/node_modules/
+faultdemo/node_modules/
+faultdemo/e2e
+package-lock.json
