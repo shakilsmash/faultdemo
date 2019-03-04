@@ -1,6 +1,35 @@
 <div>
   <h2>Fault Time Scale</h2>
 </div>
+<!-- <div>
+  <form action="list.component.html">
+    <select name="interval">
+      <option value="5">5 Minutes</option>
+      <option value="10">10 Minutes</option>
+      <option value="15">15 Minutes</option>
+      <option value="30">30 Minutes</option>
+    </select>
+  </form>
+</div> --> 
+<div>
+  <form [formGroup]="createForm" class="create-form">
+    <span style="padding-right: 25px;">
+      Interval:
+    </span> <mat-form-field class="field-full-width">
+      <!-- <input matInput placeholder="Sub Domain" formControlName="subDomain" #subDomain> -->
+      <mat-select [(value)]="selected" placeholder="1 Hour" value="" formControlName="interval" #interval>
+        <mat-option value="5">5 Minutes</mat-option>
+        <mat-option value="10">10 Minutes</mat-option>
+        <mat-option value="15">15 Minutes</mat-option>
+        <mat-option value="30">30 Minutes</mat-option>
+        <mat-option value="60">1 Hour</mat-option>
+        <mat-option value="120">2 Hour</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button style="padding-left: 20px;" type="submit" (click)="changeInterval(interval.value)" [disabled]="createForm.pristine || createForm.invalid" mat-raised-button color="primary">Show</button>
+  </form>
+</div>
+<br>
 <div style="width:75%;margin:auto;display:block;">
     <canvas id="canvas"  basechart width="1280px" height="200px" style=""></canvas>
   </div>

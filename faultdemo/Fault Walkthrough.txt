@@ -1,0 +1,72 @@
+Let's start with the backend folder,
+
+	/models/Fault.js: 	database er column gula rakhtese.
+	/node_modules	:	ja ja module download korsi ekhane thakbe
+	/.babelrc		:	babel er ekta jinish
+	/package.json 	:	configuration file, shob libraries import list ekhane thake..k ki use korbe na korbe
+	/server.js 		:	the server that is running the database ..fetching and entering n data to db
+		 - router.route lines set the url
+		 	- :id == url er okhane parameter expect kore
+		 - Line 112: sets the currect file path to root aka '/'
+		 - Line 115: o localhost:4000 port open kore for the database (NOT the project, only the database)
+
+Now, the faultdemo folder,
+	/e2e			:	ignore
+	/src			:	your project is here 
+
+	/src/index.html	:	the index file of the project, etai load kore. etar CSS part ta is for the tooltip
+						tooltip: point e hover korle jei window ta ashe oke tooltip bole
+	/src/assets		:	local css/js/img files ekhane rakhte hoi... amader project e eta dorkar nai jodio :v
+	/src/app		: 	the folder that has all the works(front+backend) of the project we are building
+
+	/src/app/app.component.ts	:	ei file ta holo app er root configuration file
+	/src/app/app.component.html	:	index.html calls this file
+	/src/app/app.module.ts 		:	this file calls ALL the modules (aka libraries) that we will use in the project
+									declarations: the components we created .. java er objects are called component here
+									imports: the modules, or libraries we are importing
+									baki jinish not important
+
+	/src/app/fault.service.ts 	:	Connects the DB with this project to pass the data
+									Line 9: sets the url that connects to db
+									baki ta norm methods
+									Line 18, 35, 51, 55: routes to specific DB requests... backend folder er server.js file e jei routes set korsilam. ogula er kache jai eta.
+
+	/src/app/components/chart	:	ignore
+	/src/app/components/create	:	Creates the entry of the db
+									The html file shows a form using angular material library
+									On "submit/save" button, ts file activates:
+										console.log("..."); >>> to see output of these, go to browser > load page > right click > inspect element > check console tab
+										Line 13: time format
+										Line 14: creates the form using angular material
+										line 33: addFault method is executed
+										Line 36-82: converted + merged time and date into a single string
+										Line 84-116: found the time diff
+										Line 124-128: updates and routes to list page
+									ngOnInit() function is called when the page loads, ekhane kono kaj nai er
+
+
+
+	/src/app/components/edit	:	edits the entry of the db : similar to create form.
+
+	/src/app/components/list	:	shows entry list + the chart works are here
+									HTML File:
+										Line 4-6: chart
+										Baki ta db theke fetch kore just show kore shob data
+										Line 13: collection name >> element variable e save kore .. then ekta ekta kore dekhai
+									TS File:
+										Line 21: table er column set korse
+										Line 30: db theke entry gula fetch kore >> Line 221
+											Line 228 to 230: adds data to chart >> Line 244
+												Line 246 to 249: tooltip er html render kore rakhsi
+												Line 252 to 257: sets graph color
+												Line 258 to 273: chart er value set korlo
+												**addDummyData is a test method, kaaj nai er
+										Line 33: chart er configuration stuff
+											Line 53: title of chart
+											Line 62: x axes ki show korbe ota : second minute hour day etc ja dibi ...
+											Line 99: the custom == ekhane tooltip ta render kore and styling set kore
+										Line 188: onclick function, table display kore chart er niche
+										Line 205: canvas div k daak dei
+										Line 206: chart ta canvas div e add kore dei
+
+

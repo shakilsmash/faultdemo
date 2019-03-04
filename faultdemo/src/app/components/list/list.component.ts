@@ -1,8 +1,9 @@
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material';
 import { Chart } from 'chart.js';
-
+import { Moment } from 'moment';
 import { Fault } from '../../fault.model';
 import { FaultService } from '../../fault.service';
 import { text } from '@angular/core/src/render3';
@@ -13,22 +14,29 @@ import { text } from '@angular/core/src/render3';
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit, AfterViewInit {
+  selected = '60';
   i:any = 0;
+  stepSize:any;
   chart:any = [];
   faults: Fault[];
-  
+  createForm: FormGroup;
   checkFault:  any = {};
   displayedColumns = ['startDateTime', 'endDateTime', 'duration', 'domain', 'subDomain', 'cause', 'action', 'actions'];
 
-  constructor(private faultService: FaultService, private router: Router) { }
+  constructor(private faultService: FaultService, private router: Router, private fb: FormBuilder) {
+    this.createForm = this.fb.group({
+        interval: ''
+    })
+  }
 
   ngOnInit() {
     // this.faultService.getFaults().subscribe((faults) => {
     //   console.log(faults);
     // });
+    
     var pointTrack = new Array();
     this.fetchFaults();
-
+    var fetchedId = '';
     var timeFormat: any = 'DD/MM/YYYY hh:mm:ss a';
     var config = {
       type:    'line',
@@ -59,10 +67,13 @@ export class ListComponent implements OnInit, AfterViewInit {
               xAxes: [{
                   type: 'time',
                   time: {
-                        unit: 'second',
-                      
-  //                  distribution: 'linear'
-                    tooltipFormat: 'DD/MM/YYYY HH:mm:ss'
+                    unit: 'minute',
+                    unitStepSize: '60',
+                    distribution: 'linear',
+                    tooltipFormat: 'DD/MM/YYYY HH:mm:ss',
+                    //min: '02/27/2019 1:00:00 AM'
+                    // max: moment(data.end_date).format('MM'),
+                    // min: monent(data.start_date).format('MM')
                   },
                   scaleLabel: {
                       display:     true,
@@ -71,9 +82,12 @@ export class ListComponent implements OnInit, AfterViewInit {
                   ticks: {
                     //X-axes display control
                     
-                    callback: function(dataLabel, index) {
-                      return index % 30 === 0 ? dataLabel : null;
-                    }
+                    // callback: function(dataLabel, index) {
+                    //   return index % 1 === 0 ? dataLabel : null;
+                    // }
+                    autoSkip: false,
+                    maxRotation: 90,
+                    minRotation: 90
                   }
               }],
               yAxes: [{
@@ -93,7 +107,6 @@ export class ListComponent implements OnInit, AfterViewInit {
               // mode: 'nearest', //index
               // intersect: false,
               // mode: 'index',
-
               //Starts the custom thingy
               intersect: false,
               enabled: false,
@@ -142,7 +155,6 @@ export class ListComponent implements OnInit, AfterViewInit {
                       //                 ;
                       //  });
 
-                      var fetchedId = '';
                        bodyLines.forEach(function(body, i) {
                         var colors = tooltipModel.labelColors[i];
                         var style = 'background:' + colors.backgroundColor;
@@ -154,18 +166,7 @@ export class ListComponent implements OnInit, AfterViewInit {
                         temp = temp.substring(24, temp.length);
                         innerHtml += '<tr><td>' + span + temp + '</td></tr>';
                     });
-                      innerHtml = '<div><tbody onclick="updateValue('+fetchedId+')>' + innerHtml.substring(0,innerHtml.length-13) + '</td></tr>';
-                      // for(var i = 0; i < pointTrack.length; i+=2) {
-                      //   innerHtml +='<tr><td>Start:</td><td bgcolor="#bababa"> ' + pointTrack[i] + ' GMD+8</td></tr>' + 
-                      //   '<tr><td>End:</td><td> '+ pointTrack[i+1] +' GMD+8</td></tr>' + 
-                      //   '<tr><td>Length:</td><td>00:05:45</td></tr>' + 
-                      //   '<tr><td>Keywords:</td><td>works, yay, best</td></tr>'
-                      //   ; 
-                      //   if(pointTrack.length > 2) {
-                      //     pointTrack.pop();
-                      //     //pointTrack.pop();
-                      //   }
-                      // }
+                      innerHtml = '<div><tbody>' + innerHtml.substring(0,innerHtml.length-13) + '</td></tr>';
 
                       innerHtml += '</tbody></div>';
                       var tableRoot = tooltipEl.querySelector('table');
@@ -190,22 +191,47 @@ export class ListComponent implements OnInit, AfterViewInit {
           onClick: function(event) {
             var showList = document.getElementById('showList');
             showList.style.display = 'block';
-
-
-            // var tooltipEl = document.getElementById('showDiv');
-
-            // Create element on first render
-            // if (!showList) {
-            //     showList = document.createElement('div');
-            //     showList.id = 'showDiv';
-            //     showList.innerHTML = "<h2>"+value+" HAHAHAHAHAHAHAHAH "+ label +"</h2>";
-            //     document.body.appendChild(tooltipEl);
-            // }
           }
       }
     }
     var ctx = document.getElementById("canvas").getContext("2d");
     this.chart = new Chart(ctx, config);
+  }
+
+  changeInterval(interval) {
+    var minTime = new Date ('01/01/2050 12:00:00 PM');
+      this.stepSize = interval;
+      console.log("Form: " + interval);
+      console.log("Step: " + this.stepSize);
+      //this.chart.options.scales.xAxes.time.unitStepSize = interval;
+      this.chart.options.scales.xAxes[0].time.unit = 'minute';
+      this.chart.options.scales.xAxes[0].time.unitStepSize = interval;
+      this.faults.forEach(element => {
+        var currentDate = new Date(element.startDateTime.toString());
+        if(currentDate < minTime) {
+          minTime = currentDate;
+          console.log("Date changed to " + minTime);
+        }
+      });
+      var coeff = 1000 * 60 * 5;
+      var date = new Date();  //or use any other date
+      var ampmSetter = minTime.getHours();
+      var ampm = '';
+      if(ampmSetter > 12) {
+        ampm = 'PM';
+      }
+      else {
+        ampm = 'AM';
+      }
+      var something = Math.floor(minTime.getHours());
+      //console.log(something);
+      //var rounded = new Date(Math.round(something / coeff) * coeff)
+
+      var setDate = minTime.getMonth()+1 +'/'+ minTime.getDate() + '/'+ minTime.getFullYear() + ' ' + something+':00:00 '+ ampm;
+      console.log(setDate);
+      //this.chart.options.scales.xAxes[0].time.min = '02/27/2019 1:00:00 AM';
+      this.chart.options.scales.xAxes[0].time.min = setDate;
+      this.chart.update();
   }
 
   ngAfterViewInit() {
@@ -230,6 +256,7 @@ export class ListComponent implements OnInit, AfterViewInit {
         this.faults.forEach(element => {
           this.addData(element);
         });
+        this.changeInterval(60);
       });
   }
 

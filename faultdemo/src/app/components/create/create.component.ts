@@ -53,6 +53,9 @@ export class CreateComponent implements OnInit {
       var hours = timeSplit[0];
       var minutes = timeSplit[1];
       var seconds = timeSplit[2];
+      if(!seconds) {
+        seconds = 0;
+      }
 
       if(hours > 12) {
         hours -= 12;
@@ -69,6 +72,9 @@ export class CreateComponent implements OnInit {
       var hours = timeSplit[0];
       var minutes = timeSplit[1];
       var seconds = timeSplit[2];
+      if(!seconds) {
+        seconds = 0;
+      }
 
       if(hours > 12) {
         hours -= 12;
