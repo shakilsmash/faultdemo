@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-
+import mongodb from 'mongodb';
 import Fault from './models/Fault';
 
 //const express = require("express");
@@ -25,7 +25,16 @@ app.get('/faults', (req, res) => {
     });
 });
 
-mongoose.connect('mongodb://localhost:27017/faults', { useNewUrlParser: true });
+//mongoose.connect('mongodb://localhost:27017/faults', { useNewUrlParser: true });
+mongoose.connect('mongodb://admin:admin@faultdemo-shard-00-00-nztdb.mongodb.net:27017,faultdemo-shard-00-01-nztdb.mongodb.net:27017,faultdemo-shard-00-02-nztdb.mongodb.net:27017/test?ssl=true&replicaSet=faultdemo-shard-0&authSource=admin&retryWrites=true', { useNewUrlParser: true });
+// const MongoClient = require('mongodb').MongoClient;
+// const uri = "mongodb+srv://admin:admin@faultdemo-nztdb.mongodb.net/test?retryWrites=true";
+// const client = new MongoClient(uri, { useNewUrlParser: true });
+// client.connect(err => {
+//   const collection = client.db("faults").collection("faults");
+//   // perform actions on the collection object
+//   client.close();
+// });
 
 const connection = mongoose.connection;
 
