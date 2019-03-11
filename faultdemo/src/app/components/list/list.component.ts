@@ -55,6 +55,11 @@ export class ListComponent implements OnInit, AfterViewInit {
           // ]
       },
       options: {
+          layout: {
+              padding: {
+                  left: 50
+              } 
+          },
           responsive: true,
           title:      {
               display: false,
@@ -227,10 +232,12 @@ export class ListComponent implements OnInit, AfterViewInit {
       //console.log(something);
       //var rounded = new Date(Math.round(something / coeff) * coeff)
 
-      var setDate = minTime.getMonth()+1 +'/'+ minTime.getDate() + '/'+ minTime.getFullYear() + ' ' + something+':00:00 '+ ampm;
-      console.log(setDate);
+      var setMinDate = minTime.getMonth()+1 +'/'+ minTime.getDate() + '/'+ minTime.getFullYear() + ' ' + something+':00:00 '+ ampm;
+      //var setMaxDate = maxTime.getMonth()+1 +'/'+ maxTime.getDate() + '/'+ maxTime.getFullYear() + ' ' + something+':00:00 '+ ampm;
+      console.log(setMinDate);
       //this.chart.options.scales.xAxes[0].time.min = '02/27/2019 1:00:00 AM';
-      this.chart.options.scales.xAxes[0].time.min = setDate;
+      this.chart.options.scales.xAxes[0].time.min = setMinDate;
+      //this.chart.options.scales.xAxes[0].time.max = setMaxDate;
       this.chart.update();
   }
 
