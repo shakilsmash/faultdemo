@@ -28,7 +28,7 @@ export class ListComponent implements OnInit, AfterViewInit {
   createForm: FormGroup;
   updateForm: FormGroup;
   checkFault:  any = {};
-  displayedColumns = ['startDateTime', 'endDateTime', 'duration', 'domain', 'subDomain', 'cause', 'action'];
+  displayedColumns = ['duration', 'startDateTime', 'endDateTime', 'domain', 'subDomain', 'cause', 'action'];
 
   constructor(private snackBar: MatSnackBar, private faultService: FaultService, private router: Router, private fb: FormBuilder) {
     this.createForm = this.fb.group({
@@ -309,7 +309,8 @@ export class ListComponent implements OnInit, AfterViewInit {
           onClick: (event) => {
             // var showList = document.getElementById('showList');
             // showList.style.display = 'block';
-            this.faultShowInfo = [];
+            // this.faultShowInfo = [];
+            // this.faultInfo = [];
             var activePoint = this.chart.getElementAtEvent(event);
             console.log(activePoint);
             var id = "";
@@ -337,7 +338,8 @@ export class ListComponent implements OnInit, AfterViewInit {
                     
                   }
                 });
-              if(this.faultInfo.completed == 'false' || !this.faultInfo.completed) {
+
+              if(this.faultInfo.completed.localeCompare('false') == 0 || !this.faultInfo.completed) {
                 this.createHTML();
                 var showList = document.getElementById('showList');
                 showList.style.display = 'none';
