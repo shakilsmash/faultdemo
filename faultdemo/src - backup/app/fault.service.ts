@@ -35,11 +35,11 @@ export class FaultService {
     return this.http.post(`${this.uri}/faults/add`, fault);
   }
 
-  updateFault(id, acknowledged, domain, subDomain, cause, action, keyword, completed) {
+  updateFault(id, startDateTime, endDateTime, duration, acknowledged, domain, subDomain, cause, action, keyword, completed) {
     const fault = {
-      //startDateTime: startDateTime,
-      //endDateTime: endDateTime,
-      // duration: duration,
+      startDateTime: startDateTime,
+      endDateTime: endDateTime,
+      duration: duration,
       acknowledged: acknowledged,
       domain: domain,
       subDomain: subDomain,

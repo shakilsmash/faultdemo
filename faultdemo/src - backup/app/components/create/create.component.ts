@@ -19,15 +19,19 @@ export class CreateComponent implements OnInit {
       startTime: '',
       endDate: ['', Validators.required],
       endTime: '',
+      //duration: '',
+      //acknowledged: '',
       domain: '',
       subDomain: '',
       cause: '',
       action: '',
+      //keyword: '',
+      //completed: ''
     });
   }
   
   addFault(startDate, startTime, endDate, endTime, domain, subDomain, cause, action) {
-
+//
 
       var timeStart = new Date(startDate + " " + startTime);
       var timeEnd = new Date(endDate + " " + endTime);

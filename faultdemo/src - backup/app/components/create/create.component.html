@@ -1,0 +1,61 @@
+<div>
+  <br>
+  <mat-card>
+    <section class="mat-typography">
+      <h3>Create a New Fault</h3>
+    </section>
+    <mat-divider></mat-divider>
+    <br>
+    <form [formGroup]="createForm" class="create-form">
+      <mat-form-field>
+          <!-- <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="startDate" #startDate>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker> -->
+          <input matInput type="date" formControlName="startDate" placeholder="Date" #startDate>
+      </mat-form-field>
+      <mat-form-field>
+          <input matInput type="time" formControlName="startTime" placeholder="Time" step="1" #startTime>
+      </mat-form-field>
+
+      <mat-form-field>
+          <!-- <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="endDate" #endDate>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker> -->
+          <input matInput type="date" formControlName="endDate" placeholder="Date" #endDate>
+      </mat-form-field>
+      <mat-form-field>
+          <input matInput type="time" formControlName="endTime" placeholder="Time" step = "1" #endTime>
+      </mat-form-field>
+
+
+      <mat-form-field class="field-full-width">
+        <!-- <input matInput placeholder="Sub Domain" formControlName="subDomain" #subDomain> -->
+        <mat-select placeholder="Domain" value="" formControlName="domain" #domain>
+          <mat-option value="CP">CP</mat-option>
+          <mat-option value="DP">DP</mat-option>
+          <mat-option value="ALL">ALL</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="field-full-width">
+        <!-- <input matInput placeholder="Sub Domain" formControlName="subDomain" #subDomain> -->
+        <mat-select placeholder="Sub Domain" formControlName="subDomain" #subDomain>
+          <mat-option value="Sensor">Sensor</mat-option>
+          <mat-option value="MovingEquip - motor">MovingEquip - motor</mat-option>
+          <mat-option value="MovingEquip - vibrator">MovingEquip - vibrator</mat-option>
+          <mat-option value="ControlCabinet - switch">ControlCabinet - switch</mat-option>
+          <mat-option value="ControlCabinet - cable">ControlCabinet - cable</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Cause Descriptor" formControlName="cause" #cause>
+      </mat-form-field>
+      <mat-form-field class="field-full-width">
+        <input matInput placeholder="Corrective Descriptor" formControlName="action" #action>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <br><br>
+      <button mat-raised-button color="accent" routerLink="/list">Back</button>
+      <button type="submit" (click)="addFault(startDate.value, startTime.value, endDate.value, endTime.value, domain.value, subDomain.value, cause.value, action.value)" [disabled]="createForm.pristine || createForm.invalid" mat-raised-button color="primary">Save</button>
+    </form>
+  </mat-card>
+</div>

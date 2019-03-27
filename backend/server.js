@@ -89,9 +89,9 @@ router.route('/faults/update/:id').post((req, res) => {
             return next(new Error('Could not load document.'));
         }
         else {
-            fault.startDateTime = req.body.startDateTime;
-            fault.endDateTime = req.body.endDateTime;
-            fault.duration = req.body.duration;
+            //fault.startDateTime = req.body.startDateTime;
+            //fault.endDateTime = req.body.endDateTime;
+            //fault.duration = req.body.duration;
             fault.acknowledged = req.body.acknowledged;
             fault.domain = req.body.domain;
             fault.subDomain = req.body.subDomain;

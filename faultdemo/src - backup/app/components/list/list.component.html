@@ -1,9 +1,17 @@
 <div>
   <h2>Fault Time Scale</h2>
 </div>
+<!-- <div>
+  <form action="list.component.html">
+    <select name="interval">
+      <option value="5">5 Minutes</option>
+      <option value="10">10 Minutes</option>
+      <option value="15">15 Minutes</option>
+      <option value="30">30 Minutes</option>
+    </select>
+  </form>
+</div> --> 
 <div>
-  <!-- <button mat-raised-button color="primary" routerLink="/create">Create New Issue</button> -->
-  <button mat-raised-button color="primary" (click)="showCreateForm()">Create New Issue</button>
   <form [formGroup]="createForm" class="create-form">
     <span style="padding-right: 25px;">
       Interval:
@@ -31,8 +39,7 @@
         <h2>Fault Entries</h2>
       </div>
   <mat-card>
-     <!-- <table mat-table [dataSource]="faults"> -->
-        <table mat-table [dataSource]="faultShowInfo">
+    <table mat-table [dataSource]="faults">
       <ng-container matColumnDef="startDateTime">
         <th mat-header-cell *matHeaderCellDef class="mat-column-right">From Time</th>
         <td mat-cell *matCellDef="let element" class="mat-column-right"> {{element.startDateTime}} </td>
@@ -71,58 +78,19 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef class="mat-column-right">Actions</th>
         <td mat-cell *matCellDef="let element" class="mat-column-right">
+          <button mat-button color="primary" (click)="editFault(element._id)">Edit</button>
           <button mat-button color="warn" (click)="deleteFault(element._id)">Delete</button>
         </td>
       </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <br><br>
+    <button mat-raised-button color="primary" routerLink="/create">Create New Issue</button>
+    <br><br>
   </mat-card>
 </div>
-
-<div id="updateList" style="display:none">
-    <br>
-    <mat-card>
-      <section class="mat-typography">
-        <h3>Update a Fault</h3>
-      </section>
-      <mat-divider></mat-divider>
-      <br>
-      <form [formGroup]="updateForm" class="edit-form">
-        <mat-form-field class="field-full-width">
-          <!-- <input matInput placeholder="Sub Domain" formControlName="subDomain" #subDomain> -->
-          <mat-select placeholder="Domain" formControlName="domain" #domain>
-              <mat-option value="CP">CP</mat-option>
-              <mat-option value="DP">DP</mat-option>
-              <mat-option value="ALL">ALL</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="field-full-width">
-          <!-- <input matInput placeholder="Sub Domain" formControlName="subDomain" #subDomain> -->
-          <mat-select placeholder="Sub Domain" formControlName="subDomain" #subDomain>
-              <mat-option value="Sensor">Sensor</mat-option>
-              <mat-option value="MovingEquip - motor">MovingEquip - motor</mat-option>
-              <mat-option value="MovingEquip - vibrator">MovingEquip - vibrator</mat-option>
-              <mat-option value="ControlCabinet - switch">ControlCabinet - switch</mat-option>
-              <mat-option value="ControlCabinet - cable">ControlCabinet - cable</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="field-full-width">
-          <input matInput placeholder="Cause Descriptor" formControlName="cause" #cause>
-        </mat-form-field>
-        <mat-form-field class="field-full-width">
-          <input matInput placeholder="Corrective Descriptor" formControlName="action" #action>
-        </mat-form-field>
-        <mat-form-field class="field-full-width">
-            <input matInput placeholder="Keywords" formControlName="keyword" #keyword>
-        </mat-form-field>
-        <mat-divider></mat-divider>
-        <br><br>
-        <button mat-raised-button color="accent" routerLink="/list">Back</button>
-        <button type="submit" (click)="updateFault(domain.value, subDomain.value, cause.value, action.value, keyword.value)" [disabled]="updateForm.pristine || updateForm.invalid" mat-raised-button color="primary">Save</button>
-      </form>
-    </mat-card>
-  </div>
 <!-- <div style="width:75%;">
   <canvas id="canvas"></canvas>
 </div> -->

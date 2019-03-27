@@ -1,5 +1,4 @@
-import { MatSnackBar } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material';
@@ -8,7 +7,6 @@ import { Moment } from 'moment';
 import { Fault } from '../../fault.model';
 import { FaultService } from '../../fault.service';
 import { text } from '@angular/core/src/render3';
-import { DataSource } from '@angular/cdk/table';
 
 @Component({
   selector: 'app-list',
@@ -18,37 +16,17 @@ import { DataSource } from '@angular/cdk/table';
 export class ListComponent implements OnInit, AfterViewInit {
   selected = '60';
   i:any = 0;
-  id: String;
   stepSize:any;
   chart:any = [];
-  fault: any = {};
-  faultInfo: any = {};
-  faultShowInfo: Fault[] = [];
   faults: Fault[];
   createForm: FormGroup;
-  updateForm: FormGroup;
   checkFault:  any = {};
-  displayedColumns = ['startDateTime', 'endDateTime', 'duration', 'domain', 'subDomain', 'cause', 'action'];
+  displayedColumns = ['startDateTime', 'endDateTime', 'duration', 'domain', 'subDomain', 'cause', 'action', 'actions'];
 
-  constructor(private snackBar: MatSnackBar, private faultService: FaultService, private router: Router, private fb: FormBuilder) {
+  constructor(private faultService: FaultService, private router: Router, private fb: FormBuilder) {
     this.createForm = this.fb.group({
-        interval: '',
-        startDate: ['', Validators.required],
-        startTime: '',
-        endDate: ['', Validators.required],
-        endTime: '',
-        domain: '',
-        subDomain: '',
-        cause: '',
-        action: '',
+        interval: ''
     })
-    this.updateForm = this.fb.group({
-      domain: '',
-      subDomain: '',
-      cause: '',
-      action: '',
-      keyword: '',
-    });
   }
 
   ngOnInit() {
@@ -306,91 +284,22 @@ export class ListComponent implements OnInit, AfterViewInit {
                   //tooltipEl.style.pointerEvents = 'none';
               }
           },
-          onClick: (event) => {
-            // var showList = document.getElementById('showList');
-            // showList.style.display = 'block';
-            this.faultShowInfo = [];
+          onClick: function(event) {
+            var showList = document.getElementById('showList');
+            showList.style.display = 'block';
             var activePoint = this.chart.getElementAtEvent(event);
+            //var activePoint = this.chart.getElementsAtEventForMode(event, 'point', this.chart.options);
             console.log(activePoint);
-            var id = "";
             if(activePoint[0]){
-              id = ""+this.chart.legend.legendItems[activePoint[0]._datasetIndex].text;
-              id = id.substring(0,24);
-              this.id = id;
-              //this.editFault(id);
-              
-              this.faultService.getFaultById(this.id).subscribe(res => {
-                this.faultInfo = res;
-              });
-              
-              this.faultService.getFaults()
-                .subscribe((data: Fault[]) => {
-                  var count = 0;
-                  this.faultShowInfo = data;
-                  for (let index = 0; index < this.faultShowInfo.length; index++) {
-                    var str = ''+this.id;
-                      if(this.faultShowInfo[index]._id.localeCompare(str)!==0) {
-                      console.log("removing: " + this.faultShowInfo[index]._id);
-                      this.faultShowInfo.splice(index, 1);
-                      index--;
-                    }
-                    
-                  }
-                });
-              if(this.faultInfo.completed == 'false' || !this.faultInfo.completed) {
-                this.createHTML();
-                var showList = document.getElementById('showList');
-                showList.style.display = 'none';
-              }
-              else {
-                console.log("eta processed " + this.id);
-                var showList = document.getElementById('updateList');
-                showList.style.display = 'none';
-                var showList = document.getElementById('showList');
-                showList.style.display = 'block';
-              }
+              //var id = ""+this.chart.legend.legendItems[activePoint[0]._index].text;
+              var id = ""+this.chart.legend.legendItems[activePoint[0]._datasetIndex].text;
+              id = id.substring(0,24)
+
+                console.log(id);
             }
-            
       }
     }
     });
-  }
-
-  createHTML() {
-      var showList = document.getElementById('updateList');
-      showList.style.display = 'block';
-  }
-
-  updateFault(domain, subDomain, cause, keyword, action) {
-   
-    var acknowledged = true;
-    var completed = true;
-    // console.log(domain);
-    // console.log(subDomain);
-    // console.log(cause);
-    // console.log(keyword);
-    // console.log(action);
-    // console.log(this.id);
-    this.faultService.getFaultById(this.id).subscribe(res => {
-      this.fault = res;
-      this.updateForm.get('startDateTime').setValue(this.fault.startDateTime);
-      this.updateForm.get('endDateTime').setValue(this.fault.endDateTime);
-      this.updateForm.get('duration').setValue(this.fault.duration);
-      //this.updateForm.get('acknowledged').setValue(this.fault.acknowledged);
-      this.updateForm.get('domain').setValue(this.fault.domain);
-      this.updateForm.get('subDomain').setValue(this.fault.subDomain);
-      this.updateForm.get('cause').setValue(this.fault.cause);
-      this.updateForm.get('action').setValue(this.fault.action);
-      this.updateForm.get('keyword').setValue(this.fault.keyword);
-      //this.updateForm.get('completed').setValue(this.fault.completed);
-    });
-     this.faultService.updateFault(this.id, acknowledged, domain, subDomain, cause, action, keyword, completed).subscribe(() => {
-       this.snackBar.open('Fault updated successfully...', 'OK', {
-         duration: 3000
-       });
-        //this.router.navigate(['/list']);
-        document.location.reload(true);
-     });
   }
 
   changeInterval(interval) {
@@ -430,10 +339,6 @@ export class ListComponent implements OnInit, AfterViewInit {
       //this.chart.options.scales.xAxes[0].time.max = setMaxDate;
       this.chart.update();
   }
-  showCreateForm() {
-    var showList = document.getElementById('showList');
-    showList.style.display = 'block';
-  }
 
   updateValue(id) {
     console.log(id);
@@ -464,7 +369,11 @@ export class ListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-
+    //console.log("testtest " + this.faults.length);
+      // this.faults.forEach(element => {
+      //   //this.addData(element);
+      //   console.log("test " + element.status);
+      // });
   }
 
   addData(newValue: Fault) {

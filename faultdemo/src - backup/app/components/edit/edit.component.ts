@@ -56,11 +56,11 @@ export class EditComponent implements OnInit {
     var acknowledged = true;
     var completed = true;
 
-    // this.faultService.updateFault(this.id, this.fault.startDateTime, this.fault.endDateTime, this.fault.duration, acknowledged, domain, subDomain, cause, action, keyword, completed).subscribe(() => {
-    //   this.snackBar.open('Fault updated successfully...', 'OK', {
-    //     duration: 3000
-    //   });
-    //   this.router.navigate(['/list']);
-    // });
+    this.faultService.updateFault(this.id, this.fault.startDateTime, this.fault.endDateTime, this.fault.duration, acknowledged, domain, subDomain, cause, action, keyword, completed).subscribe(() => {
+      this.snackBar.open('Fault updated successfully...', 'OK', {
+        duration: 3000
+      });
+      this.router.navigate(['/list']);
+    });
   }
 }
