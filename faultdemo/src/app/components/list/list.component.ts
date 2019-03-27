@@ -479,10 +479,10 @@ export class ListComponent implements OnInit, AfterViewInit {
       makeString += "<span class='badge badge-pill badge-light'>"+keywords[index]+"  </span>"
       
     }
-    var text = newValue._id + '<tr><td style="text-align:right;">Start: </td><td class="badge badge-pill badge-light"><span class="glyphicon glyphicon-time"></span> ' + newValue.startDateTime + ' GMT+8</td></tr>' + 
+    var text = newValue._id + '<tr><td style="text-align:right;">Start: </td><td class="badge badge-pill badge-light"><span class="glyphicon glyphicon-calendar"></span> ' + newValue.startDateTime + ' GMT+8</td></tr>' + 
     //var text = '<tr><td>Start: </td><td bgcolor="#bababa"> ' + newValue.startDateTime + ' GMD+8</td></tr>' + 
-    '<tr><td style="text-align:right;">End: </td><td class="badge badge-pill badge-light"> '+ newValue.endDateTime +' GMT+8</td></tr>' + 
-    '<tr><td style="text-align:right;">Length: </td><td class="badge badge-pill badge-light">'+newValue.duration+'</td></tr>' + 
+    '<tr><td style="text-align:right;">End: </td><td class="badge badge-pill badge-light"><span class="glyphicon glyphicon-calendar"></span> '+ newValue.endDateTime +' GMT+8</td></tr>' + 
+    '<tr><td style="text-align:right;">Length: </td><td class="badge badge-pill badge-light"><span class="glyphicon glyphicon-time"></span>  '+newValue.duration+'</td></tr>' + 
     '<tr><td style="text-align:right;">Keywords: </td><td>'+makeString+'</td></tr>';
     // '<tr><td>Keywords: </td><td><span class="badge badge-pill badge-light">'+newValue.keyword+'</span></td></tr>';
 
