@@ -8,9 +8,14 @@ table {
 
 .edit-form {
     min-width: 150px;
-    width: 35%;
+    width: 100%;
 }
 
 .field-full-width {
-    width: 35%;
+    width: 20%;
+    margin-right: 1%;
+}
+.field-half-width {
+    width: 15%;
+    margin-right: 1%;
 }

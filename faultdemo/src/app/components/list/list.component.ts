@@ -362,7 +362,6 @@ export class ListComponent implements OnInit, AfterViewInit {
   }
 
   updateFault(domain, subDomain, cause, keyword, action) {
-   
     var acknowledged = true;
     var completed = true;
     // console.log(domain);
@@ -373,6 +372,9 @@ export class ListComponent implements OnInit, AfterViewInit {
     // console.log(this.id);
     this.faultService.getFaultById(this.id).subscribe(res => {
       this.fault = res;
+      // if(keyword.length == 0) {
+      //   keyword = this.fault.keyword;
+      // }
       this.updateForm.get('startDateTime').setValue(this.fault.startDateTime);
       this.updateForm.get('endDateTime').setValue(this.fault.endDateTime);
       this.updateForm.get('duration').setValue(this.fault.duration);
@@ -469,12 +471,18 @@ export class ListComponent implements OnInit, AfterViewInit {
 
   addData(newValue: Fault) {
     var color = "";
-    var text = newValue._id + '<tr><td>Start: </td><td bgcolor="#bababa"> ' + newValue.startDateTime + ' GMT+8</td></tr>' + 
+    var keywords:string [] = newValue.keyword.split(',')
+    var makeString = '';
+    for (let index = 0; index < keywords.length; index++) {
+      makeString += "<span class='badge badge-pill badge-light'>"+keywords[index]+"  </span>"
+      
+    }
+    var text = newValue._id + '<tr><td style="text-align:right;">Start: </td><td class="badge badge-pill badge-light"><span class="glyphicon glyphicon-time"></span> ' + newValue.startDateTime + ' GMT+8</td></tr>' + 
     //var text = '<tr><td>Start: </td><td bgcolor="#bababa"> ' + newValue.startDateTime + ' GMD+8</td></tr>' + 
-    '<tr><td>End: </td><td> '+ newValue.endDateTime +' GMT+8</td></tr>' + 
-    '<tr><td>Length: </td><td>'+newValue.duration+'</td></tr>' + 
-    '<tr><td>Keywords: </td><td>'+newValue.keyword+'</td></tr>'
-;
+    '<tr><td style="text-align:right;">End: </td><td class="badge badge-pill badge-light"> '+ newValue.endDateTime +' GMT+8</td></tr>' + 
+    '<tr><td style="text-align:right;">Length: </td><td class="badge badge-pill badge-light">'+newValue.duration+'</td></tr>' + 
+    '<tr><td style="text-align:right;">Keywords: </td><td>'+makeString+'</td></tr>';
+    // '<tr><td>Keywords: </td><td><span class="badge badge-pill badge-light">'+newValue.keyword+'</span></td></tr>';
 
     if(newValue.completed == "true") {
       color = 'blue';
